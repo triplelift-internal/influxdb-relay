@@ -48,5 +48,5 @@ USER 1001
 # Replace VOLUME with internal storage (COPY conf command above)
 # VOLUME ["/etc/influxdb-relay/influxdb-relay.conf"]
 
-CMD ["-config", "/etc/influxdb-relay/influxdb-relay.conf" ]
+CMD ["-v", "-config", "/etc/influxdb-relay/influxdb-relay.conf" ]
 # EOF

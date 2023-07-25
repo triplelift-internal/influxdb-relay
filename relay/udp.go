@@ -29,13 +29,17 @@ type UDP struct {
 	backends []*udpBackend
 }
 
+var log_level bool = false
+
 // NewUDP -TODO-
-func NewUDP(config config.UDPConfig) (Relay, error) {
+func NewUDP(config config.UDPConfig, verbose bool) (Relay, error) {
 	u := new(UDP)
 
 	u.name = config.Name
 	u.addr = config.Addr
 	u.precision = config.Precision
+
+	log_level = verbose
 
 	l, err := net.ListenPacket("udp", u.addr)
 	if err != nil {
@@ -164,9 +168,13 @@ func (u *UDP) Stop() error {
 }
 
 func (u *UDP) post(p *packet) {
-	// log.Printf("Got packet relay %q from %v: length %v", u.Name(), p.from, len(p.data.Bytes()))
+	if log_level {
+		log.Printf("Got packet relay %q from %v: length %v", u.Name(), p.from, len(p.data.Bytes()))
+	}
 	for _, b := range u.backends {
-		// log.Printf("Forward data from %v to %v, lengh %v", p.from, b.addr, len(p.data.Bytes()))
+		if log_level {
+			log.Printf("Forward data from %v to %v, lengh %v", p.from, b.addr, len(p.data.Bytes()))
+		}
 		if err := b.post(p.data.Bytes()); err != nil {
 			log.Printf("Error forwarding data from %v to %v, lengh %v: %v", p.from, b.addr, len(p.data.Bytes()), err)
 		}

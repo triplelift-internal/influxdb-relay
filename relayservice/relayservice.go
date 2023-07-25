@@ -33,7 +33,7 @@ func New(config config.Config) (*Service, error) {
 	}
 
 	for _, cfg := range config.UDPRelays {
-		u, err := relay.NewUDP(cfg)
+		u, err := relay.NewUDP(cfg, config.Verbose)
 		if err != nil {
 			return nil, err
 		}

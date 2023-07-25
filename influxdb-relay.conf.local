@@ -13,23 +13,23 @@ timeout   = "10s"
 
 [[http.output]]
 name      = "local-influxdb02"
-location  = "http://127.0.0.1:8086/"
+location  = "http://127.0.0.1:8087/"
 endpoints = {write="/write", write_prom="/api/v1/prom/write", ping="/", query="/query"}
 timeout   = "10s"
 
 [[udp]]
 name        = "influxdb-relay-collectd"
-bind-addr   = "0.0.0.0:9096"
+bind-addr   = "0.0.0.0:36936"
 read-buffer = 0 # default
 
 [[udp.output]]
 name     = "local-influxdb01"
 location = "127.0.0.1:25826"
-mtu      = 1500 
+mtu      = 1500
 
 [[udp.output]]
 name     = "local-influxdb02"
-location = "127.0.0.1:25826"
+location = "127.0.0.1:25827"
 mtu      = 1500 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network_mtu.html
 
 # EOF

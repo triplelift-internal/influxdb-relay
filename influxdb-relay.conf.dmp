@@ -25,7 +25,7 @@ read-buffer = 0 # default
 [[udp.output]]
 name     = "influxdb.1plusx.io"
 location = "influxdb.1plusx.io:25826"
-mtu      = 1500 
+mtu      = 1500
 
 [[udp.output]]
 name     = "influxdb-euc1.1plusx.io"

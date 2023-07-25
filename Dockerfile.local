@@ -41,7 +41,7 @@ COPY ./influxdb-relay.conf.local /etc/influxdb-relay/influxdb-relay.conf
 
 ENTRYPOINT [ "/usr/bin/influxdb-relay" ]
 
-EXPOSE 9096
+EXPOSE 9096 36936/udp
 
 USER 1001
 

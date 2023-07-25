@@ -11,6 +11,23 @@
 7. [Development](#development)
 8. [Miscellaneous](#miscellaneous)
 
+## DMP
+
+The following files have been customized to meet the needs of DMP specific usage of the influxdb-relay docker image
+
+* relay/udp.go
+* Makefile
+* Dockerfile.dmp
+* Dockerfile.local
+* influxdb-relay.conf.dmp
+* influxdb-relay.conf.local
+
+---
+
+* Use `make build-dmp` and `make push-dmp` to build and push the influxdb-relay docker image to dmp aws ecr
+* Use `make build-local` and `make run` to build and test the influxdb-relay docker image localy
+* Use `make prune` to clean your environment from all (unused) images
+
 ## Overview
 
 Maintained fork of [influxdb-relay][overview-href] originally developed by

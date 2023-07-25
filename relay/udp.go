@@ -9,8 +9,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/influxdata/influxdb/models"
-
 	"github.com/strike-team/influxdb-relay/config"
 )
 
@@ -166,38 +164,13 @@ func (u *UDP) Stop() error {
 }
 
 func (u *UDP) post(p *packet) {
-	points, err := models.ParsePointsWithPrecision(p.data.Bytes(), p.timestamp, u.precision)
-	if err != nil {
-		log.Printf("Error parsing packet in relay %q from %v: %v", u.Name(), p.from, err)
-		putUDPBuf(p.data)
-		return
-	}
-
-	out := getUDPBuf()
-	for _, pt := range points {
-		if _, err = out.WriteString(pt.PrecisionString(u.precision)); err != nil {
-			break
-		}
-		if err = out.WriteByte('\n'); err != nil {
-			break
-		}
-	}
-
-	putUDPBuf(p.data)
-
-	if err != nil {
-		putUDPBuf(out)
-		log.Printf("Error writing points in relay %q: %v", u.Name(), err)
-		return
-	}
-
+	// log.Printf("Got packet relay %q from %v: length %v", u.Name(), p.from, len(p.data.Bytes()))
 	for _, b := range u.backends {
-		if err := b.post(out.Bytes()); err != nil {
-			log.Printf("Error writing points in relay %q to backend %q: %v", u.Name(), b.name, err)
+		// log.Printf("Forward data from %v to %v, lengh %v", p.from, b.addr, len(p.data.Bytes()))
+		if err := b.post(p.data.Bytes()); err != nil {
+			log.Printf("Error forwarding data from %v to %v, lengh %v: %v", p.from, b.addr, len(p.data.Bytes()), err)
 		}
 	}
-
-	putUDPBuf(out)
 }
 
 type udpBackend struct {

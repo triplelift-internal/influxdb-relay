@@ -19,7 +19,7 @@ timeout   = "10s"
 
 [[udp]]
 name        = "influxdb-relay-collectd"
-bind-addr   = "0.0.0.0:9096"
+bind-addr   = "0.0.0.0:36936"
 read-buffer = 0 # default
 
 [[udp.output]]

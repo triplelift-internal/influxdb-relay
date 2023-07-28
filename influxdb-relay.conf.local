@@ -14,7 +14,7 @@ timeout   = "10s"
 [[http.output]]
 name      = "local-influxdb02"
 location  = "http://127.0.0.1:8087/"
-endpoints = {write="/write", write_prom="/api/v1/prom/write", ping="/", query="/query"}
+endpoints = {write="/write", write_prom="/api/v1/prom/write", ping="/ping"}
 timeout   = "10s"
 
 [[udp]]

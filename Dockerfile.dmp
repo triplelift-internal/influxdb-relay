@@ -20,19 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-FROM golang:1.19-alpine as builder
+FROM golang:1.20-alpine as builder
 
 ENV GOOS=linux
 ENV GOARCH=amd64
 
-# Add missing git
+# Add missing packages
 RUN apk --update add git build-base
 WORKDIR /go/src/github.com/strike-team/influxdb-relay/
+
+# Copy & Install
 COPY . .
-# Install
 RUN CGO_ENABLED=0 go build -a -ldflags='-w -s -extldflags "-static"' -o /go/bin/influxdb-relay
 
-FROM scratch
+FROM alpine/curl:latest
 # Copy our static executable.
 COPY --from=builder /go/bin/influxdb-relay /usr/bin/influxdb-relay
 
@@ -41,12 +42,10 @@ COPY ./influxdb-relay.conf.dmp /etc/influxdb-relay/influxdb-relay.conf
 
 ENTRYPOINT [ "/usr/bin/influxdb-relay" ]
 
-EXPOSE 9096
+EXPOSE 9096 36936/udp
 
 USER 1001
 
-# Replace VOLUME with internal storage (COPY conf command above)
-# VOLUME ["/etc/influxdb-relay/influxdb-relay.conf"]
-
+# Run in verbose mode (-v)
 CMD ["-v", "-config", "/etc/influxdb-relay/influxdb-relay.conf" ]
-# EOF
+

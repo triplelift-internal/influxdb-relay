@@ -1,4 +1,4 @@
-.PHONY: all build clean prune
+.PHONY: all build clean
 
 all: build push-dmp
 
@@ -25,13 +25,14 @@ docker login --username AWS --password-stdin 937685464166.dkr.ecr.eu-central-1.a
 redeploy-dmp:
 	aws ecs update-service --cluster $(cluster) --service influxdb-relay --region $(region) --force-new-deployment
 
-run: build-local
+run:
 	docker run \
 -p 127.0.0.1:9096:9096 \
 -p 127.0.0.1:36936:36936/udp \
---rm influxdb-relay:latest
+--name=influxdb-relay --rm influxdb-relay:latest
 
-clean: prune
-prune:
-	docker image prune -a -f
+clean:
+	docker rm -f influxdb-relay 2> /dev/null || true
+	docker image rm 937685464166.dkr.ecr.eu-central-1.amazonaws.com/influxdb-relay 2> /dev/null || true
+	docker image prune -f
 

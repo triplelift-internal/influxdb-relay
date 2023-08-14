@@ -128,6 +128,10 @@ func (h *HTTP) handleHealth(w http.ResponseWriter, _ *http.Request, _ time.Time)
 	return
 }
 
+func (h *HTTP) handleQuery(w http.ResponseWriter, r *http.Request, _ time.Time) {
+	http.Redirect(w, r, "http://influxdb.1plusx.io", 301)
+}
+
 func (h *HTTP) handleAdmin(w http.ResponseWriter, r *http.Request, _ time.Time) {
 	// Client to perform the raw queries
 	client := http.Client{}

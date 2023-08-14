@@ -73,6 +73,7 @@ var (
 		"/admin":             (*HTTP).handleAdmin,
 		"/admin/flush":       (*HTTP).handleFlush,
 		"/health":            (*HTTP).handleHealth,
+		"/query":             (*HTTP).handleQuery
 	}
 
 	middlewares = []relayMiddleware{

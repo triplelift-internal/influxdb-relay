@@ -25,8 +25,16 @@ docker login --username AWS --password-stdin 937685464166.dkr.ecr.eu-central-1.a
 redeploy-dmp:
 	aws ecs update-service --cluster $(cluster) --service influxdb-relay --region $(region) --force-new-deployment
 
+rund:
+	docker run -d \
+-p 127.0.0.1:8080:80 \
+-p 127.0.0.1:9096:9096 \
+-p 127.0.0.1:36936:36936/udp \
+--name=influxdb-relay --rm influxdb-relay:latest
+
 run:
 	docker run \
+-p 127.0.0.1:8080:80 \
 -p 127.0.0.1:9096:9096 \
 -p 127.0.0.1:36936:36936/udp \
 --name=influxdb-relay --rm influxdb-relay:latest

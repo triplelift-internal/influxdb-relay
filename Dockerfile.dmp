@@ -40,12 +40,12 @@ COPY --from=builder /go/bin/influxdb-relay /usr/bin/influxdb-relay
 # Statically copy the influxdb-configuration inside the container
 COPY ./influxdb-relay.conf.dmp /etc/influxdb-relay/influxdb-relay.conf
 
-ENTRYPOINT [ "/usr/bin/influxdb-relay" ]
+EXPOSE 80/tcp 9096/tcp 36936/udp
 
-EXPOSE 9096 36936/udp
-
-USER 1001
+# Install NGINX
+RUN apk add nginx
+COPY ./nginx-http-dmp.conf /etc/nginx/http.d/default.conf
 
 # Run in verbose mode (-v)
-CMD ["-v", "-config", "/etc/influxdb-relay/influxdb-relay.conf" ]
+CMD nginx && /usr/bin/influxdb-relay -v -config /etc/influxdb-relay/influxdb-relay.conf
 

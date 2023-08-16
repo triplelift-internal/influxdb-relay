@@ -46,6 +46,10 @@ EXPOSE 80/tcp 9096/tcp 36936/udp
 RUN apk add nginx
 COPY ./nginx-http-dmp.conf /etc/nginx/http.d/default.conf
 
+# test both influxdb-relay and nginx connectivity and echo command to container output
+HEALTHCHECK --interval=30s --retries=3 --timeout=2s \
+  CMD ((echo  $(date +"%Y/%m/%d %H:%M:%S") "HEALTHEHCK: curl --fail http://localhost:9096/health && curl -so /dev/null http://localhost) || exit 1" | tee /proc/1/fd/1) && curl --fail http://localhost:9096/health && curl -so /dev/null http://localhost) || exit 1
+
 # Run in verbose mode (-v)
 CMD nginx && /usr/bin/influxdb-relay -v -config /etc/influxdb-relay/influxdb-relay.conf
 

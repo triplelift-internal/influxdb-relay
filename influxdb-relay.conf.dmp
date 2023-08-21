@@ -6,13 +6,13 @@ name      = "influxdb-relay-api"
 bind-addr = "0.0.0.0:9096"
 
 [[http.output]]
-name      = "influxdb.1plusx.io"
-location  = "http://influxdb.1plusx.io:8086/"
+name      = "influxdb-old"
+location  = "http://influxdb-euw1.1plusx.io:8086/"
 endpoints = {write="/write", write_prom="/api/v1/prom/write", ping="/ping", query="/query"}
 timeout   = "10s"
 
 [[http.output]]
-name      = "influxdb-euc1.1plusx.io"
+name      = "influxdb-new"
 location  = "http://influxdb-euc1.1plusx.io:8086/"
 endpoints = {write="/write", write_prom="/api/v1/prom/write", ping="/ping", query="/query"}
 timeout   = "10s"

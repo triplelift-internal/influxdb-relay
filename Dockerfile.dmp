@@ -52,5 +52,5 @@ COPY ./influxdb-relay.conf.dmp /etc/influxdb-relay/influxdb-relay.conf
 EXPOSE 80/tcp 9096/tcp 36936/udp
 
 # Run in verbose mode (-v)
-CMD nginx && /usr/bin/influxdb-relay -v -config /etc/influxdb-relay/influxdb-relay.conf
+CMD nginx && /usr/bin/influxdb-relay -config /etc/influxdb-relay/influxdb-relay.conf
 

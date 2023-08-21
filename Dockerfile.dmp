@@ -34,13 +34,6 @@ COPY . .
 RUN CGO_ENABLED=0 go build -a -ldflags='-w -s -extldflags "-static"' -o /go/bin/influxdb-relay
 
 FROM alpine/curl:latest
-# Copy our static executable.
-COPY --from=builder /go/bin/influxdb-relay /usr/bin/influxdb-relay
-
-# Statically copy the influxdb-configuration inside the container
-COPY ./influxdb-relay.conf.dmp /etc/influxdb-relay/influxdb-relay.conf
-
-EXPOSE 80/tcp 9096/tcp 36936/udp
 
 # Install NGINX
 RUN apk add nginx
@@ -49,6 +42,14 @@ COPY ./nginx-http-dmp.conf /etc/nginx/http.d/default.conf
 # test both influxdb-relay and nginx connectivity and echo command to container output
 HEALTHCHECK --interval=30s --retries=3 --timeout=2s \
   CMD ((echo  $(date +"%Y/%m/%d %H:%M:%S") "HEALTHEHCK: curl --fail http://localhost:9096/health && curl -so /dev/null http://localhost) || exit 1" | tee /proc/1/fd/1) && curl --fail http://localhost:9096/health && curl -so /dev/null http://localhost) || exit 1
+
+# Copy our static executable.
+COPY --from=builder /go/bin/influxdb-relay /usr/bin/influxdb-relay
+
+# Statically copy the influxdb-configuration inside the container
+COPY ./influxdb-relay.conf.dmp /etc/influxdb-relay/influxdb-relay.conf
+
+EXPOSE 80/tcp 9096/tcp 36936/udp
 
 # Run in verbose mode (-v)
 CMD nginx && /usr/bin/influxdb-relay -v -config /etc/influxdb-relay/influxdb-relay.conf

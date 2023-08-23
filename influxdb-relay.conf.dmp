@@ -23,12 +23,12 @@ bind-addr   = "0.0.0.0:36936"
 read-buffer = 0 # default
 
 [[udp.output]]
-name     = "influxdb.1plusx.io"
-location = "influxdb.1plusx.io:25826"
+name     = "influxdb-udp-old"
+location = "influxdb-euw1.1plusx.io:25826"
 mtu      = 1500
 
 [[udp.output]]
-name     = "influxdb-euc1.1plusx.io"
+name     = "influxdb-udp-new"
 location = "influxdb-euc1.1plusx.io:25826"
 mtu      = 1500 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network_mtu.html
 

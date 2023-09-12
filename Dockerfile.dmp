@@ -36,10 +36,8 @@ RUN CGO_ENABLED=0 go build -a -ldflags='-w -s -extldflags "-static"' -o /go/bin/
 FROM alpine/curl:latest
 
 # Install NGINX
-RUN apk add nginx logrotate
-RUN ln -s /etc/periodic/daily/logrotate  /etc/periodic/hourly/logrotate
+RUN apk add nginx
 COPY ./nginx-http-dmp.conf /etc/nginx/http.d/default.conf
-COPY ./nginx-logrotate.conf /etc/logrotate.d/nginx
 
 # test both influxdb-relay and nginx connectivity and echo command to container output
 HEALTHCHECK --interval=30s --retries=3 --timeout=2s \

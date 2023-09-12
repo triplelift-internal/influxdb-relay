@@ -38,7 +38,6 @@ FROM alpine/curl:latest
 # Install NGINX
 RUN apk add nginx
 COPY ./nginx-http-dmp.conf /etc/nginx/http.d/default.conf
-COPY ./nginx-logrotate.conf /etc/logrotate.d/nginx
 
 # test both influxdb-relay and nginx connectivity and echo command to container output
 HEALTHCHECK --interval=30s --retries=3 --timeout=2s \

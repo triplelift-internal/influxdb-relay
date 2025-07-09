@@ -1,0 +1,4 @@
+# CODEOWNERS
+* @triplelift-internal/subteam-audience-and-identity-signals
+.github/** @triplelift-internal/subteam-audience-and-identity-signals-deployers
+
